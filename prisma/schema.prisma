@@ -51,6 +51,7 @@ model User {
   attendance    Attendance[]
   leaveRequests LeaveRequest[]
   payroll       Payroll?
+  payslips      Payslip[]
 }
 
 model Attendance {
@@ -86,4 +87,25 @@ model Payroll {
   allowances   Float @default(0)
   deductions   Float @default(0)
   updatedAt    DateTime @updatedAt
+}
+
+enum PayslipStatus {
+  PAID
+  PENDING
+}
+
+model Payslip {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  month        Int
+  year         Int
+  basicSalary  Float
+  allowances   Float         @default(0)
+  deductions   Float         @default(0)
+  netPay       Float
+  status       PayslipStatus @default(PENDING)
+  generatedAt  DateTime      @default(now())
+
+  @@index([userId, year, month])
 }

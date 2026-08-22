@@ -152,6 +152,54 @@ async function main() {
   });
 
   console.log("✅ Leave requests seeded");
+
+  // ── Payslips: Last 3 months ───────────────────────────────────────────
+  const currentMonth = now.getUTCMonth() + 1; // 1-12
+  const currentYear = now.getUTCFullYear();
+  let payslipCount = 0;
+
+  for (const user of [admin, emp1, emp2]) {
+    const baseSalaries: Record<string, number> = {
+      EMP001: 150000,
+      EMP002: 80000,
+      EMP003: 95000,
+    };
+    const basicSalary = baseSalaries[user.employeeId] || 75000;
+    
+    for (let i = 0; i < 3; i++) {
+      let m = currentMonth - i;
+      let y = currentYear;
+      if (m <= 0) {
+        m += 12;
+        y -= 1;
+      }
+      
+      const status = i === 0 ? "PENDING" : "PAID";
+      const allowances = 15000;
+      const deductions = 5000;
+      const netPay = basicSalary + allowances - deductions;
+
+      await prisma.payslip.upsert({
+        where: { id: `seed-payslip-${user.id}-${y}-${m}` },
+        update: {},
+        create: {
+          id: `seed-payslip-${user.id}-${y}-${m}`,
+          userId: user.id,
+          month: m,
+          year: y,
+          basicSalary,
+          allowances,
+          deductions,
+          netPay,
+          status,
+        },
+      });
+      payslipCount++;
+    }
+  }
+
+  console.log(`✅ Payslips: ${payslipCount} records seeded`);
+
   console.log("\n🎉 Seed complete!");
   console.log("─────────────────────────────────────────");
   console.log("Demo credentials (password: Demo@123):");
