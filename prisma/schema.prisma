@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum LeaveType {
+  PAID
+  SICK
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  LEAVE
+}
+
+model User {
+  id            String     @id @default(cuid())
+  employeeId    String     @unique
+  email         String     @unique
+  password      String
+  role          Role       @default(EMPLOYEE)
+  emailVerified Boolean    @default(false)
+  fullName      String?
+  phone         String?
+  address       String?
+  profilePic    String?
+  jobTitle      String?
+  department    String?
+  dateJoined    DateTime   @default(now())
+  createdAt     DateTime   @default(now())
+
+  attendance    Attendance[]
+  leaveRequests LeaveRequest[]
+  payroll       Payroll?
+}
+
+model Attendance {
+  id        String            @id @default(cuid())
+  userId    String
+  user      User              @relation(fields: [userId], references: [id])
+  date      DateTime          @default(now())
+  checkIn   DateTime?
+  checkOut  DateTime?
+  status    AttendanceStatus  @default(PRESENT)
+
+  @@index([userId, date])
+}
+
+model LeaveRequest {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  type      LeaveType
+  startDate DateTime
+  endDate   DateTime
+  remarks   String?
+  status    LeaveStatus @default(PENDING)
+  comment   String?
+  createdAt DateTime    @default(now())
+}
+
+model Payroll {
+  id       String @id @default(cuid())
+  userId   String @unique
+  user     User   @relation(fields: [userId], references: [id])
+  baseSalary   Float
+  allowances   Float @default(0)
+  deductions   Float @default(0)
+  updatedAt    DateTime @updatedAt
+}
