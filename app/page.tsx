@@ -1,18 +1,11 @@
-import { NavigationBar } from "@/components/navigation-bar";
-import { LeaveApplicationForm } from "@/components/leave-application-form";
 
-export const metadata = {
-  title: "Dayflow — Modern Intelligent HRMS",
-  description: "Next-generation Human Resource Management System for enterprise teams.",
-};
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-50">
-      <NavigationBar />
-      <main className="py-6">
-        <LeaveApplicationForm />
-      </main>
-    </div>
-  );
+/**
+ * Root redirect — sends users to signin.
+ * The middleware will then redirect authenticated users to their home.
+ */
+export default function RootPage() {
+  redirect("/signin");
+
 }
