@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -46,6 +46,7 @@ model User {
   department    String?
   dateJoined    DateTime   @default(now())
   createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   attendance    Attendance[]
   leaveRequests LeaveRequest[]
