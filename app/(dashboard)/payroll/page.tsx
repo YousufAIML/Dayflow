@@ -132,7 +132,7 @@ export default function PayrollPage() {
               No Payslips Available
             </h2>
             <p style={{ margin: 0, fontSize: "0.875rem", color: "var(--color-text-muted)", maxWidth: 360 }}>
-              You don't have any generated payslips yet. They will appear here once processed by HR.
+              You don&apos;t have any generated payslips yet. They will appear here once processed by HR.
             </p>
           </div>
         </div>
