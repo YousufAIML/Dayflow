@@ -181,7 +181,7 @@ export default async function DashboardPage() {
           />
           <QuickAccessCard
             id="quick-leave"
-            href="/leave"
+            href="/leaves"
             icon={<LeaveIcon />}
             label="Leave Requests"
             description="Apply for or track your leaves"

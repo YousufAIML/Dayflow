@@ -55,7 +55,7 @@ export const config = {
     "/profile/:path*",
     "/admin/:path*",
     "/attendance/:path*",
-    "/leave/:path*",
+    "/leaves/:path*",
     "/payroll/:path*",
     "/signin",
     "/signup",

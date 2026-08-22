@@ -1,4 +1,3 @@
-import { NavigationBar } from "@/components/navigation-bar";
 import { LeaveApplicationForm } from "@/components/leave-application-form";
 
 export const metadata = {
@@ -8,11 +7,8 @@ export const metadata = {
 
 export default function ApplyLeavePage() {
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-50">
-      <NavigationBar />
-      <main className="py-6">
-        <LeaveApplicationForm />
-      </main>
+    <div className="py-6">
+      <LeaveApplicationForm />
     </div>
   );
 }

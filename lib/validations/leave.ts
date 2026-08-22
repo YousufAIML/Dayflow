@@ -43,4 +43,5 @@ export const createLeaveSchema = z
     }
   );
 
+export type LeaveType = z.infer<typeof leaveTypeEnum>;
 export type CreateLeaveInput = z.infer<typeof createLeaveSchema>;
