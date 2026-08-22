@@ -2,11 +2,11 @@ import { NavigationBar } from "@/components/navigation-bar";
 import { LeaveApplicationForm } from "@/components/leave-application-form";
 
 export const metadata = {
-  title: "Dayflow — Modern Intelligent HRMS",
-  description: "Next-generation Human Resource Management System for enterprise teams.",
+  title: "Apply for Leave | Dayflow HRMS",
+  description: "Employee leave application portal with live balance check and automated approval routing.",
 };
 
-export default function Home() {
+export default function ApplyLeavePage() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-50">
       <NavigationBar />
