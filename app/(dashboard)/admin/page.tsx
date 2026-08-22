@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import StatCard from "@/components/admin/StatCard";
 import EmployeeTable from "@/components/admin/EmployeeTable";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Admin · Team Overview" };
@@ -110,14 +111,16 @@ export default async function AdminPage() {
             accent="var(--color-success-500)"
             description={`of ${employees.length} employees`}
           />
-          <StatCard
-            id="stat-pending-leaves"
-            label="Pending Leaves"
-            value={pendingLeaves}
-            icon={<ClockIcon />}
-            accent="var(--color-warning-500)"
-            description="Awaiting your approval"
-          />
+          <Link href="/admin/leaves" style={{ textDecoration: "none" }}>
+            <StatCard
+              id="stat-pending-leaves"
+              label="Pending Leaves"
+              value={pendingLeaves}
+              icon={<ClockIcon />}
+              accent="var(--color-warning-500)"
+              description="Awaiting your approval"
+            />
+          </Link>
         </div>
       </section>
 

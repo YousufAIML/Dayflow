@@ -20,6 +20,8 @@ async function main() {
       jobTitle: "HR Manager",
       department: "Human Resources",
       emailVerified: true,
+      address: "123 Tech Park, MG Road, Bangalore",
+      profilePic: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun",
     },
   });
 
@@ -36,6 +38,8 @@ async function main() {
       jobTitle: "Software Engineer",
       department: "Engineering",
       emailVerified: true,
+      address: "456 Cyber City, DLF Phase 3, Gurgaon",
+      profilePic: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
     },
   });
 
@@ -52,6 +56,8 @@ async function main() {
       jobTitle: "Product Designer",
       department: "Design",
       emailVerified: true,
+      address: "789 Startup Village, Koramangala, Bangalore",
+      profilePic: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohit",
     },
   });
 
@@ -134,6 +140,7 @@ async function main() {
       endDate:   new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 3)),
       remarks: "Fever",
       status: "APPROVED",
+      comment: "Admin: Approved. Please take care and submit the doctor's note when you return.",
     },
   });
 

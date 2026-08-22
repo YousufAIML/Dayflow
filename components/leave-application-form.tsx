@@ -229,11 +229,11 @@ export function LeaveApplicationForm() {
       {/* Leave Balances Header Cards */}
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Paid Leave Card */}
-        <div className={`relative overflow-hidden rounded-2xl border p-5 transition-all ${
+        <div className={`relative overflow-hidden rounded-2xl border p-5 transition-all cursor-pointer ${
           leaveType === "PAID"
-            ? "border-indigo-300 bg-indigo-50/50 shadow-sm dark:border-indigo-800 dark:bg-indigo-950/20"
-            : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-        }`}>
+            ? "border-indigo-500 bg-indigo-50/80 shadow-md dark:border-indigo-500 dark:bg-indigo-900/40"
+            : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:bg-zinc-800/80"
+        }`} onClick={() => setLeaveType("PAID")}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Paid Leave
@@ -256,11 +256,11 @@ export function LeaveApplicationForm() {
         </div>
 
         {/* Sick Leave Card */}
-        <div className={`relative overflow-hidden rounded-2xl border p-5 transition-all ${
+        <div className={`relative overflow-hidden rounded-2xl border p-5 transition-all cursor-pointer ${
           leaveType === "SICK"
-            ? "border-rose-300 bg-rose-50/50 shadow-sm dark:border-rose-800 dark:bg-rose-950/20"
-            : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-        }`}>
+            ? "border-rose-500 bg-rose-50/80 shadow-md dark:border-rose-500 dark:bg-rose-900/40"
+            : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:bg-zinc-800/80"
+        }`} onClick={() => setLeaveType("SICK")}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Sick Leave
@@ -283,11 +283,11 @@ export function LeaveApplicationForm() {
         </div>
 
         {/* Unpaid Leave Card */}
-        <div className={`relative overflow-hidden rounded-2xl border p-5 transition-all ${
+        <div className={`relative overflow-hidden rounded-2xl border p-5 transition-all cursor-pointer ${
           leaveType === "UNPAID"
-            ? "border-amber-300 bg-amber-50/50 shadow-sm dark:border-amber-800 dark:bg-amber-950/20"
-            : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-        }`}>
+            ? "border-amber-500 bg-amber-50/80 shadow-md dark:border-amber-500 dark:bg-amber-900/40"
+            : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:bg-zinc-800/80"
+        }`} onClick={() => setLeaveType("UNPAID")}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Unpaid Leave
@@ -452,14 +452,14 @@ export function LeaveApplicationForm() {
                         onClick={() => setLeaveType(option.id as "PAID" | "SICK" | "UNPAID")}
                         className={`relative flex items-start gap-3 rounded-2xl border p-4 text-left transition-all ${
                           isSelected
-                            ? "border-zinc-900 bg-zinc-900 text-white shadow-md dark:border-white dark:bg-white dark:text-zinc-900"
-                            : "border-zinc-200 bg-zinc-50/50 text-zinc-800 hover:border-zinc-300 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-950/40 dark:text-zinc-200 dark:hover:border-zinc-700"
+                            ? "border-indigo-600 bg-indigo-600 text-white shadow-md dark:border-indigo-500 dark:bg-indigo-500"
+                            : "border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-200 dark:hover:border-zinc-600"
                         }`}
                       >
                         <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
                           isSelected
-                            ? "bg-white/20 text-white dark:bg-black/10 dark:text-zinc-900"
-                            : "bg-zinc-200/80 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                            ? "bg-white/20 text-white"
+                            : "bg-zinc-100 text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400"
                         }`}>
                           <Icon className="h-4 w-4" />
                         </div>
@@ -467,7 +467,7 @@ export function LeaveApplicationForm() {
                           <div className="flex items-center justify-between">
                             <span className="font-semibold text-sm">{option.title}</span>
                             {isSelected && (
-                              <CheckCircle2 className="h-4 w-4 text-emerald-400 dark:text-emerald-600" />
+                              <CheckCircle2 className="h-4 w-4 text-white" />
                             )}
                           </div>
                           <p className={`mt-0.5 text-xs ${
@@ -519,10 +519,10 @@ export function LeaveApplicationForm() {
                           setStartDate(e.target.value);
                           validateField("startDate", e.target.value);
                         }}
-                        className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-zinc-900 shadow-xs transition-colors focus:outline-hidden dark:bg-zinc-950 dark:text-white ${
+                        className={`w-full rounded-xl border bg-zinc-50 px-4 py-2.5 text-sm text-zinc-900 shadow-xs transition-colors focus:outline-hidden dark:bg-zinc-800/50 dark:text-white ${
                           errors.startDate
                             ? "border-rose-400 focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
-                            : "border-zinc-300 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 dark:border-zinc-700 dark:focus:border-white"
+                            : "border-zinc-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:focus:border-indigo-400"
                         }`}
                       />
                     </div>
@@ -550,10 +550,10 @@ export function LeaveApplicationForm() {
                           setEndDate(e.target.value);
                           validateField("endDate", e.target.value);
                         }}
-                        className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-zinc-900 shadow-xs transition-colors focus:outline-hidden dark:bg-zinc-950 dark:text-white ${
+                        className={`w-full rounded-xl border bg-zinc-50 px-4 py-2.5 text-sm text-zinc-900 shadow-xs transition-colors focus:outline-hidden dark:bg-zinc-800/50 dark:text-white ${
                           errors.endDate
                             ? "border-rose-400 focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
-                            : "border-zinc-300 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 dark:border-zinc-700 dark:focus:border-white"
+                            : "border-zinc-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:focus:border-indigo-400"
                         }`}
                       />
                     </div>
@@ -603,10 +603,10 @@ export function LeaveApplicationForm() {
                   placeholder="Provide context or instructions for handoff while on leave..."
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
-                  className={`w-full rounded-2xl border bg-white p-3.5 text-sm text-zinc-900 shadow-xs transition-colors focus:outline-hidden dark:bg-zinc-950 dark:text-white ${
+                  className={`w-full rounded-2xl border bg-zinc-50 p-3.5 text-sm text-zinc-900 shadow-xs transition-colors focus:outline-hidden dark:bg-zinc-800/50 dark:text-white ${
                     errors.remarks
                       ? "border-rose-400 focus:border-rose-500"
-                      : "border-zinc-300 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 dark:border-zinc-700 dark:focus:border-white"
+                      : "border-zinc-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:focus:border-indigo-400"
                   }`}
                 />
                 {errors.remarks && (

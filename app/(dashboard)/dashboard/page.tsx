@@ -156,13 +156,7 @@ export default async function DashboardPage() {
         >
           Quick Access
         </h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-            gap: "1rem",
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <QuickAccessCard
             id="quick-profile"
             href="/profile"
