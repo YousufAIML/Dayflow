@@ -52,7 +52,8 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.fullName ?? user.email,
           role: user.role,
-        } as User & { role: string };
+          employeeId: user.employeeId,
+        } as User & { role: string; employeeId: string };
       },
     }),
   ],
@@ -63,6 +64,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.userId = user.id;
         token.role = (user as User & { role: string }).role;
+        token.employeeId = (user as User & { role: string; employeeId: string }).employeeId;
       }
       return token;
     },
@@ -72,6 +74,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.userId as string;
         session.user.role = token.role as string;
+        session.user.employeeId = token.employeeId as string;
       }
       return session;
     },
@@ -81,3 +84,20 @@ export const authOptions: NextAuthOptions = {
 };
 
 export default NextAuth(authOptions);
+
+import { getServerSession } from "next-auth";
+
+export type SessionUser = { id: string; role: "ADMIN" | "EMPLOYEE"; name: string; employeeId: string };
+
+export async function getSession(_req?: Request): Promise<SessionUser | null> {
+  const session = await getServerSession(authOptions);
+  
+  if (!session?.user) return null;
+  
+  return {
+    id: session.user.id,
+    role: session.user.role as "ADMIN" | "EMPLOYEE",
+    name: session.user.name ?? "Unknown",
+    employeeId: session.user.employeeId,
+  };
+}
