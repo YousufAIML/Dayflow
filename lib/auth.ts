@@ -1,60 +1,83 @@
+import NextAuth, { NextAuthOptions, User } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+
 /**
- * Auth shim — drop-in replacement until the auth branch merges.
- *
- * Usage in API routes:
- *   const session = await getSession(request)
- *   if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 })
- *
- * When auth merges, replace the body of getSession() with:
- *   return getServerSession(authOptions) as Promise<SessionUser | null>
- *
- * Demo: set the cookie in your browser:
- *   document.cookie = 'dayflow_user=<userId>; path=/'
+ * NextAuth configuration.
+ * - Uses CredentialsProvider with email + password
+ * - jwt callback injects role + userId into the token
+ * - session callback surfaces role + id on session.user
  */
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60, // 7 days
+  },
 
-import { cookies } from "next/headers";
-import { prisma } from "./prisma";
+  pages: {
+    signIn: "/signin",
+    error: "/signin",
+  },
 
-export type SessionUser = {
-  id: string;
-  role: "ADMIN" | "EMPLOYEE";
-  name: string;
-  employeeId: string;
+  providers: [
+    CredentialsProvider({
+      id: "credentials",
+      name: "Email & Password",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email and password are required.");
+        }
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email.toLowerCase().trim() },
+        });
+
+        if (!user) {
+          throw new Error("No account found with this email.");
+        }
+
+        const passwordMatch = await compare(credentials.password, user.password);
+        if (!passwordMatch) {
+          throw new Error("Incorrect password.");
+        }
+
+        // Return the subset of user data for the token
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.fullName ?? user.email,
+          role: user.role,
+        } as User & { role: string };
+      },
+    }),
+  ],
+
+  callbacks: {
+    async jwt({ token, user }) {
+      // On first sign-in, `user` is populated — persist to token
+      if (user) {
+        token.userId = user.id;
+        token.role = (user as User & { role: string }).role;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      // Expose userId + role on session.user for client and server use
+      if (session.user) {
+        session.user.id = token.userId as string;
+        session.user.role = token.role as string;
+      }
+      return session;
+    },
+  },
+
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
-export async function getSession(
-  _req?: Request
-): Promise<SessionUser | null> {
-  try {
-    const cookieStore = await cookies();
-    const userIdCookie = cookieStore.get("dayflow_user");
-
-    let userId: string | null = userIdCookie?.value ?? null;
-
-    // In dev with no cookie, fall back to the first user in DB for demo
-    if (!userId && process.env.NODE_ENV !== "production") {
-      const fallback = await prisma.user.findFirst({
-        orderBy: { createdAt: "asc" },
-      });
-      userId = fallback?.id ?? null;
-    }
-
-    if (!userId) return null;
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, role: true, fullName: true, employeeId: true },
-    });
-
-    if (!user) return null;
-
-    return {
-      id: user.id,
-      role: user.role,
-      name: user.fullName ?? "Unknown",
-      employeeId: user.employeeId,
-    };
-  } catch {
-    return null;
-  }
-}
+export default NextAuth(authOptions);
